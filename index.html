@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>龍祥的個人主頁 | IT 服務 & 命理AI資訊研究</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #0f3460;
+            margin-bottom: 20px;
+            background: #0f3460;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 60px;
+            transition: transform 0.3s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+        h1 {
+            color: #e94560;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .tagline {
+            color: #a0a0a0;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h2 {
+            color: #e94560;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0f3460;
+        }
+        p {
+            color: #d0d0d0;
+            margin-bottom: 15px;
+        }
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .skill-tag {
+            background: #0f3460;
+            color: #e94560;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+        .skill-tag:hover {
+            background: #e94560;
+            color: #1a1a2e;
+        }
+        .links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .links a {
+            color: #e94560;
+            text-decoration: none;
+            padding: 12px 24px;
+            border: 2px solid #e94560;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .links a:hover {
+            background: #e94560;
+            color: #1a1a2e;
+            box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
+        }
+        .project {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .project:hover {
+            border-left: 4px solid #e94560;
+            background: rgba(15, 52, 96, 0.8);
+            transform: translateX(5px);
+        }
+        .project h3 {
+            color: #e94560;
+            margin-bottom: 10px;
+        }
+        .project p {
+            margin-bottom: 0;
+            font-size: 0.95em;
+        }
+        footer {
+            text-align: center;
+            color: #666;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="avatar">👨‍💻</div>
+        <h1>林龍祥 (LongXiang)</h1>
+        <p class="tagline">IT 系統優化 / 數位引導與變現探索者</p>
+        
+        <div class="links">
+            <a href="https://github.com/southchi-cell" target="_blank">GitHub</a>
+            <a href="mailto:southchi@gmail.com">Email 聯絡我</a>
+        </div>
+    </header>
+
+    <section class="section">
+        <h2>About Me | 關於我</h2>
+        <p>歡迎來到我的 GitHub 空間！我是一名專注於 <strong>IT 系統優化</strong> 與 <strong>數位知識變現</strong> 的探索者。我熱衷於透過技術解決實際問題，並利用 AI 工具挖掘自身潛能、迎合市場需求。</p>
+        <p>目前我正在建立一套從零開始的 1V1 諮詢與知識變現 SOP 流程，並計畫透過輕課程將實戰經驗轉化為具備商業價值的產品。這裡記錄了我技術攻防、系統除錯以及個人 IP 打造的學習歷程。</p>
+    </section>
+
+    <section class="section">
+        <h2>Skills | 核心技能</h2>
+        <div class="skills">
+            <span class="skill-tag">IT 服務與系統優化</span>
+            <span class="skill-tag">AI 工具應用與提示詞優化</span>
+            <span class="skill-tag">1V1 諮詢流程設計</span>
+            <span class="skill-tag">知識變現產品包裝</span>
+            <span class="skill-tag">Linux / Python 基礎</span>
+            <span class="skill-tag">Web 安全概念</span>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Projects | 進行中的項目</h2>
+        <div class="project">
+            <h3>🚀 1V1 諮詢變現 SOP 流程</h3>
+            <p>從零粉絲、零資源出發，結合 AI 技術挖掘市場痛點，設計高轉換的引導突破點，並逐步包裝出第一款客製化變現產品。</p>
+        </div>
+        <div class="project">
+            <h3>🛠️ IT 知識輕課程計畫</h3>
+            <p>將過往累積的電腦硬體改裝、系統優化等硬實力，轉化為易懂的線上知識內容，打造低門檻的輕課程產品。</p>
+        </div>
+        <div class="project">
+            <h3>🔍 個人 IP 品牌建立 (Zi Wei Dou Shu Architect)</h3>
+            <p>結合邏輯架構與精準分析，利用極簡、有質感的視覺風格，重新歸零打造專注於特定領域的個人品牌。 </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Learning Notes | 最近研究</h2>
+        <div class="project">
+            <h3>如何利用 AI 輔助精準挖掘市場需求？</h3>
+            <p>探索如何透過高效提示詞，讓 AI 成為商業邏輯與核心價值的核心智囊。</p>
+        </div>
+        <div class="project">
+            <h3>從零打造知識變現產品的第一步</h3>
+            <p>記錄如何將個人經驗結構化，並找到願意付費的第一批種子用戶。</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 龍祥 用心製作，託管於 GitHub Pages。</p>
+    </footer>
+</div>
+
+</body>
+</html>
