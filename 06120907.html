@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>姓名磁場精準分析與管理系統</title>
+    <style>
+        /* 大地自然色系風格與大師級專業質感 */
+        body {
+            font-family: "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+            background-color: #FDFBF7;
+            color: #3E2723;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: #FFFFFF;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #D2B48C;
+            box-shadow: 2px 2px 15px rgba(0,0,0,0.05);
+        }
+        h1 { text-align: center; color: #3E2723; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #757575; font-size: 0.9em; margin-bottom: 25px; }
+        
+        /* Tab 分頁樣式 */
+        .tab-menu { display: flex; border-bottom: 2px solid #E0D8C8; margin-bottom: 25px; }
+        .tab-btn { 
+            padding: 10px 20px; 
+            background: none; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 16px; 
+            color: #757575; 
+            font-weight: bold;
+        }
+        .tab-btn.active { color: #5D6D3E; border-bottom: 3px solid #5D6D3E; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* 表單與按鈕 */
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #5D6D3E; }
+        input[type="text"], input[type="number"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #D2B48C;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #FAFAFA;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #5D6D3E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #4A5732; }
+        
+        /* 結果字卡 */
+        .result-card {
+            margin-top: 25px;
+            padding: 20px;
+            border: 1px solid #E0D8C8;
+            border-radius: 10px;
+            background-color: #FFFDF9;
+        }
+        .result-layout { display: flex; justify-content: space-between; }
+        .details { flex: 1; }
+        .total-box {
+            flex: 1;
+            text-align: center;
+            border-left: 1px solid #E0D8C8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .total-num { font-size: 48px; font-weight: bold; color: #5D6D3E; margin: 10px 0; }
+        
+        /* 工具箱區塊 */
+        .tool-box { margin-top: 25px; background-color: #F5F2EB; padding: 20px; border-radius: 8px; border: 1px dashed #D2B48C; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #E0D8C8; padding: 10px; text-align: center; }
+        th { background-color: #F5F2EB; color: #5D6D3E; }
+        .delete-btn { background-color: #C62828; padding: 5px 10px; font-size: 14px; width: auto; }
+        .delete-btn:hover { background-color: #B71C1C; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📜 姓名磁場分析與管理系統</h1>
+    <div class="subtitle">紫微斗數規劃師專用高級整合後台</div>
+    
+    <div class="tab-menu">
+        <button class="tab-btn active" onclick="switchTab('analysisTab', this)">🔮 姓名精準分析</button>
+        <button class="tab-btn" onclick="switchTab('managementTab', this); renderCustomWordList();">⚙️ 字庫轉換與管理</button>
+    </div>
+
+    <div id="analysisTab" class="tab-content active">
+        <div class="input-group">
+            <label for="nameInput">客戶姓名</label>
+            <input type="text" id="nameInput" placeholder="請輸入中文姓名">
+        </div>
+        <button onclick="analyzeNameStrokes()">開始精準分析</button>
+
+        <div class="result-card" id="resultCard" style="display: none;">
+            <div class="result-layout">
+                <div class="details">
+                    <h4 style="margin-top:0;">🖋️ 筆劃拆解</h4>
+                    <div id="detailsContent"></div>
+                </div>
+                <div class="total-box">
+                    <h4 style="margin-top:0;">⚡ 磁場總計</h4>
+                    <div class="total-num" id="totalStrokesDisplay">0</div>
+                    <div style="font-size: 0.9em; color: #757575;">康熙總筆劃數</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="managementTab" class="tab-content">
+        <div class="tool-box" style="margin-top: 0; background-color: #FFFDF9; border: 2px dashed #5D6D3E;">
+            <h3 style="margin-top:0; color: #5D6D3E;">🔄 康熙字庫一鍵轉換工具 (核心解決方案)</h3>
+            <p style="font-size: 0.85em; color: #757575; margin-bottom: 15px;">
+                請選擇您本機原始的 <strong>!!!康熙筆畫查詢.txt</strong> 檔案，系統將自動處理特殊加權邏輯，並直接導出高相容標準 JSON 檔案。
+            </p>
+            <div class="input-group">
+                <input type="file" id="txtFileInput" accept=".txt">
+            </div>
+            <button onclick="convertTxtToJsonAndDownload()" style="background-color: #8D6E63;">1秒轉換並下載 stroke_dict.json</button>
+        </div>
+
+        <h3 style="margin-top: 30px;">➕ 單字緊急增補</h3>
+        <div class="input-group" style="display: flex; gap: 10px;">
+            <input type="text" id="newCharInput" placeholder="字" maxlength="1" style="flex: 1;">
+            <input type="number" id="newStrokeInput" placeholder="筆劃" style="flex: 1;">
+            <button onclick="saveCustomWord()" style="width: auto; padding: 0 25px;">儲存</button>
+        </div>
+
+        <h3>📋 目前手動擴充的字詞 (儲存於本機瀏覽器)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>字</th>
+                    <th>自訂筆劃</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="customWordTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+let globalStrokeDatabase = {};
+let localCustomDatabase = JSON.parse(localStorage.getItem('customStrokeDict')) || {};
+
+function switchTab(tabId, buttonElement) {
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    buttonElement.classList.add('active');
+}
+
+// 初始化：讀取線上已轉換的字典檔
+async function initializeSystem() {
+    try {
+        const response = await fetch('stroke_dict.json');
+        if (response.ok) {
+            globalStrokeDatabase = await response.json();
+            console.log("成功載入核心字典檔，當前收錄字數: " + Object.keys(globalStrokeDatabase).length);
+        }
+    } catch (e) {
+        console.log("尚未上傳 stroke_dict.json 或讀取失敗。");
+    }
+}
+
+// 核心轉換邏輯：讀取 TXT 轉成標準 JSON 並觸發下載
+function convertTxtToJsonAndDownload() {
+    const fileInput = document.getElementById('txtFileInput');
+    if (fileInput.files.length === 0) {
+        alert('請先選擇檔案！');
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    // 採用 ArrayBuffer 以全面相容 Big5/ANSI 編碼
+    reader.onload = function(e) {
+        const buffer = e.target.result;
+        let decodedText = new TextDecoder('big5').decode(buffer);
+        
+        // 檢查是否有亂碼，若有則動態調整為其他相容編碼格式
+        if (decodedText.includes('') || !decodedText.match(/[\u4e00-\u9fa5]/)) {
+            decodedText = new TextDecoder('utf-8').decode(buffer);
+        }
+        if (decodedText.includes('') || !decodedText.match(/[\u4e00-\u9fa5]/)) {
+            decodedText = new TextDecoder('utf-16').decode(buffer);
+        }
+
+        const lines = decodedText.split(/\r?\n/);
+        let extractedDatabase = {};
+
+        lines.forEach(line => {
+            // 匹配「一個中文字」後面跟著「數字」
+            const patternMatch = line.match(/([\u4e00-\u9fa5])\s+(\d+)/);
+            if (patternMatch) {
+                const chineseChar = patternMatch[1];
+                let strokeCount = parseInt(patternMatch[2], 10);
+                
+                // 優先執行並覆寫您重視的九宮磁場特定規則（例如：蕭 18九宮為19）
+                const specialRule = line.match(/九宮為(\d+)/);
+                if (specialRule) {
+                    strokeCount = parseInt(specialRule[1], 10);
+                }
+                extractedDatabase[chineseChar] = strokeCount;
+            }
+        });
+
+        const totalKeys = Object.keys(extractedDatabase).length;
+        if (totalKeys === 0) {
+            alert('【轉換失敗】系統無法從此文字檔解析出中文字與筆劃，請確認檔案編碼與格式是否正確。');
+            return;
+        }
+
+        // 將物件轉化成標準 JSON 字串
+        const jsonString = JSON.stringify(extractedDatabase, null, 2);
+        
+        // 建立隱藏下載連結，直接下載至本機電腦
+        const blob = new Blob([jsonString], { type: "application/json" });
+        const downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = "stroke_dict.json";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        alert(`【轉換成功！】已精準成功轉換 ${totalKeys} 個漢字數據，並已自動為您下載檔案。請將下載得到的「stroke_dict.json」放到您的 GitHub Pages 專案目錄中覆蓋舊檔即可！`);
+        
+        // 即時更新當前網頁內的資料庫，讓您不用重新整理就能測試效果
+        globalStrokeDatabase = extractedDatabase;
+    };
+
+    reader.readAsArrayBuffer(file);
+}
+
+// 姓名特徵運算分析
+function analyzeNameStrokes() {
+    const inputName = document.getElementById("nameInput").value.trim();
+    if (!inputName) {
+        alert("請先輸入姓名。");
+        return;
+    }
+
+    let calculatedTotal = 0;
+    let htmlContent = "";
+
+    for (let i = 0; i < inputName.length; i++) {
+        const charValue = inputName[i];
+        
+        // 優先從本機手動擴充字庫查詢，找不到再由大字典查詢
+        let matchResult = localCustomDatabase[charValue];
+        let isCustom = true;
+        
+        if (matchResult === undefined) {
+            matchResult = globalStrokeDatabase[charValue];
+            isCustom = false;
+        }
+        
+        if (matchResult !== undefined) {
+            const customTag = isCustom ? " <span style='color:#B8860B; font-size:0.8em;'>(自訂)</span>" : "";
+            htmlContent += `<p><strong>${charValue}</strong>： ${matchResult} 劃${customTag}</p>`;
+            calculatedTotal += matchResult;
+        } else {
+            // 盲從留白原則：雙字庫均查無此字，輸出提示
+            htmlContent += `<p><strong>${charValue}</strong>： <span style='color:#C62828;'>【資料不足，無法確認】</span></p>`;
+        }
+    }
+
+    document.getElementById("detailsContent").innerHTML = htmlContent;
+    document.getElementById("totalStrokesDisplay").innerText = calculatedTotal;
+    document.getElementById("resultCard").style.display = "block";
+}
+
+function saveCustomWord() {
+    const char = document.getElementById("newCharInput").value.trim();
+    const stroke = parseInt(document.getElementById("newStrokeInput").value.trim(), 10);
+    if (!char || isNaN(stroke)) { alert("請輸入正確的字與筆劃。"); return; }
+    localCustomDatabase[char] = stroke;
+    localStorage.setItem('customStrokeDict', JSON.stringify(localCustomDatabase));
+    document.getElementById("newCharInput").value = "";
+    document.getElementById("newStrokeInput").value = "";
+    renderCustomWordList();
+}
+
+function renderCustomWordList() {
+    const tbody = document.getElementById("customWordTableBody");
+    tbody.innerHTML = "";
+    const keys = Object.keys(localCustomDatabase);
+    if (keys.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="color:#757575;">目前尚無手動增補字詞</td></tr>`;
+        return;
+    }
+    keys.forEach(char => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td><strong>${char}</strong></td><td>${localCustomDatabase[char]} 劃</td><td><button class="delete-btn" onclick="deleteCustomWord('${char}')">刪除</button></td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+function deleteCustomWord(char) {
+    if (confirm(`確定要刪除「${char}」嗎？`)) {
+        delete localCustomDatabase[char];
+        localStorage.setItem('customStrokeDict', JSON.stringify(localCustomDatabase));
+        renderCustomWordList();
+    }
+}
+
+initializeSystem();
+</script>
+
+</body>
+</html>
